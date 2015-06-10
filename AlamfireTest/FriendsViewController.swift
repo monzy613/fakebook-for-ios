@@ -9,6 +9,16 @@
 import UIKit
 
 class FriendsViewController: UITableViewController {
+    static var selectedFriendArrID: Int = 0
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "p2pChatIdentifier" {
+            var selected: Int = FriendsViewController.selectedFriendArrID
+            println("to p2p: \(selected)")
+            (segue.destinationViewController as! P2PChatViewController).messageReceiverArrID = selected
+            (segue.destinationViewController as! P2PChatViewController).messageReceiverID = UserModel.sharedInstance.friendsIDs[selected]
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +58,7 @@ class FriendsViewController: UITableViewController {
 
         //cell.imageView?.image = UIImage(data: NSData(contentsOfURL: NSURL(string: UserModel.sharedInstance.friendsHeadImages[indexPath.row])!)!)
         cell.nickname.text = UserModel.sharedInstance.friendsNicknames[indexPath.row]
+        cell.friendArrID = indexPath.row
 
         return cell
     }

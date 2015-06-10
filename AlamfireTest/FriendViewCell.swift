@@ -10,15 +10,17 @@ import UIKit
 
 class FriendViewCell: UITableViewCell {
 
+    var friendArrID: Int = 0
     @IBOutlet weak var nickname: UILabel!
     @IBOutlet weak var headImage: UIImageView!
-    @IBAction func chatButtonPressed(sender: UIButton) {
-        println("pressed")
-    }
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
+    @IBAction func p2pButtonPressed(sender: UIButton) {
+        FriendsViewController.selectedFriendArrID = self.friendArrID
+    }
+    
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
