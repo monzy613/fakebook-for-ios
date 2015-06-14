@@ -35,12 +35,14 @@ class ViewController: UIViewController {
                 var friends = (JSON?.objectForKey("friends"))! as! [AnyObject]
                 var heads = (JSON?.objectForKey("headImageURLS"))! as! [AnyObject]
                 var tmpGallery = (JSON?.objectForKey("gallery"))! as! [AnyObject]
+                var tmpStates = (JSON?.objectForKey("states"))! as! [AnyObject]
                 var friend_amount: AnyObject? = JSON?.objectForKey("friend_amount")
                 
                 var friendsIDs = [String]()
                 var friendsNicknames = [String]()
                 var friendsHeadImages = [String]()
                 var gallery = [String]()
+                var states = [String]()
                 
 
                 
@@ -58,6 +60,10 @@ class ViewController: UIViewController {
                     friendsHeadImages.append("\(f_headImage)")
                     tmpIndex++
                 }
+                
+                for st in tmpStates {
+                    states.append("\(st)")
+                }
 
                 
                 
@@ -67,6 +73,7 @@ class ViewController: UIViewController {
                     qq: "\(qq!)",
                     email: "\(email!)",
                     headImageURL: "\(headImageURL!)",
+                    states: states,
                     gallery: gallery,
                     friendsIDs: friendsIDs,
                     friendsNicknames: friendsNicknames,

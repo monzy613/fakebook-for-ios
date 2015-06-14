@@ -19,6 +19,7 @@ class UserModel {
     var nickname: String
     var qq: String
     var email: String
+    var states: [String]
     var headImageURL: String
     var gallery: [String]
     var friendsIDs: [String]
@@ -32,7 +33,8 @@ class UserModel {
         self.qq = ""
         self.email = ""
         self.headImageURL = ""
-        gallery = []
+        self.states = []
+        self.gallery = []
         self.friendsIDs = []
         self.friendsNicknames = []
         self.friendsHeadImages = []
@@ -45,6 +47,7 @@ class UserModel {
         qq: String,
         email: String,
         headImageURL: String,
+        states: [String],
         gallery: [String],
         friendsIDs: [String],
         friendsNicknames: [String],
@@ -56,6 +59,7 @@ class UserModel {
         self.qq = qq
         self.email = email
         self.headImageURL = headImageURL
+        self.states = states
         self.gallery = gallery
         self.friendsIDs = friendsIDs
         self.friendsNicknames = friendsNicknames

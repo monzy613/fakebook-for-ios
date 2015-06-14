@@ -7,9 +7,41 @@
 //
 
 import UIKit
+import Alamofire
 
 class FriendsViewController: UITableViewController {
+    @IBAction func searchButtonPressed(sender: UIBarButtonItem) {
+        println("searching")
+        var searchInfo = [
+            "username": UserModel.sharedInstance.username,
+            "searchNickname": searchField.text
+        ]
+        Alamofire.request(.POST, "http://localhost:3000/searchByNicknameFromIOS", parameters: searchInfo).responseJSON {(req, res, JSON, error) in
+            SearchResult.arr.removeAll(keepCapacity: false)
+            
+            if JSON != nil {
+                println(JSON as! [AnyObject])
+                for tmp in (JSON as! [AnyObject]) {
+                    var IDtmp: AnyObject = tmp.objectForKey("_id")!
+                    var NICKNAMEtmp: AnyObject = tmp.objectForKey("nickname")!
+                    var dic = ["_id": "\(IDtmp)", "nickname": "\(NICKNAMEtmp)"]
+                    SearchResult.arr.append(dic)
+                    println(dic)
+                    
+                }
+                
+                let myStoryboard = self.storyboard
+                let searchStoryboard: UIViewController = myStoryboard?.instantiateViewControllerWithIdentifier("searchStoryboard") as! UIViewController
+                self.presentViewController(searchStoryboard, animated: true, completion: nil)
+                
+            } else {
+                
+            }
+        }
+    }
+    @IBOutlet weak var searchField: UITextField!
     static var selectedFriendArrID: Int = 0
+    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "p2pChatIdentifier" {
@@ -17,12 +49,13 @@ class FriendsViewController: UITableViewController {
             println("to p2p: \(selected)")
             (segue.destinationViewController as! P2PChatViewController).messageReceiverArrID = selected
             (segue.destinationViewController as! P2PChatViewController).messageReceiverID = UserModel.sharedInstance.friendsIDs[selected]
+        } else if segue.identifier == "friendSearchIdentifier" {
+            
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -51,16 +84,38 @@ class FriendsViewController: UITableViewController {
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("friendCell", forIndexPath: indexPath) as! FriendViewCell
+        
+        
 
-        // Configure the cell...
-        cell.headImage.image = UIImage(data: NSData(contentsOfURL: NSURL(string: UserModel.sharedInstance.friendsHeadImages[indexPath.row])!)!)
-
-        //cell.imageView?.image = UIImage(data: NSData(contentsOfURL: NSURL(string: UserModel.sharedInstance.friendsHeadImages[indexPath.row])!)!)
-        cell.nickname.text = UserModel.sharedInstance.friendsNicknames[indexPath.row]
-        cell.friendArrID = indexPath.row
-
-        return cell
+            let cell = tableView.dequeueReusableCellWithIdentifier("friendCell", forIndexPath: indexPath) as! FriendViewCell
+            
+            // Configure the cell...
+            cell.headImage.image = UIImage(data: NSData(contentsOfURL: NSURL(string: UserModel.sharedInstance.friendsHeadImages[indexPath.row])!)!)
+            
+            //cell.imageView?.image = UIImage(data: NSData(contentsOfURL: NSURL(string: UserModel.sharedInstance.friendsHeadImages[indexPath.row])!)!)
+            cell.nickname.text = UserModel.sharedInstance.friendsNicknames[indexPath.row]
+            cell.friendArrID = indexPath.row
+            
+            return cell
+        
+/*
+        if indexPath.row != UserModel.sharedInstance.friend_amount {
+            let cell = tableView.dequeueReusableCellWithIdentifier("friendCell", forIndexPath: indexPath) as! FriendViewCell
+            
+            // Configure the cell...
+            cell.headImage.image = UIImage(data: NSData(contentsOfURL: NSURL(string: UserModel.sharedInstance.friendsHeadImages[indexPath.row])!)!)
+            
+            //cell.imageView?.image = UIImage(data: NSData(contentsOfURL: NSURL(string: UserModel.sharedInstance.friendsHeadImages[indexPath.row])!)!)
+            cell.nickname.text = UserModel.sharedInstance.friendsNicknames[indexPath.row]
+            cell.friendArrID = indexPath.row
+            
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCellWithIdentifier("searchFriendCell", forIndexPath: indexPath) as! FriendSearchTableViewCell
+            return cell
+        }
+ */
+        
     }
     
 

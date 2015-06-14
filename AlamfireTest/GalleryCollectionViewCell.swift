@@ -12,4 +12,5 @@ class GalleryCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var image: UIImageView!
     var imagePath: String = ""
+    var imageID: Int = 0
 }

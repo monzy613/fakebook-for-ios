@@ -7,17 +7,23 @@
 //
 
 import UIKit
+import Alamofire
 
 let reuseIdentifier = "Cell"
 
-class GalleryCollectionViewController: UICollectionViewController {
+class GalleryCollectionViewController: UICollectionViewController{
+    
+    @IBAction func uploadPhoto(sender: UIBarButtonItem) {
+        
+    }
+    
+    
+    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let identifier = segue.identifier {
             if (identifier == "imageDetail") {
-                (segue.destinationViewController as! PhotoViewController).photoPath =
-                    (sender as! GalleryCollectionViewCell).imagePath
-                println("IMAGEDETAIL: \((sender as! GalleryCollectionViewCell).imagePath)")
+                (segue.destinationViewController as! GalleryScrollViewController).startID = (sender as! GalleryCollectionViewCell).imageID
             }
         }
     }
@@ -32,6 +38,25 @@ class GalleryCollectionViewController: UICollectionViewController {
         self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
 
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        updateUI()
+    }
+    
+    
+    private func updateUI() {
+        Alamofire.request(.POST, "http://localhost:3000/renewGalleryFromIOS", parameters: ["username": UserModel.sharedInstance.username]).responseJSON {
+            (req, res, JSON, error) in
+            var tmpGallery = (JSON?.objectForKey("gallery"))! as! [AnyObject]
+            var gallery = [String]()
+            for ele in tmpGallery {
+                gallery.append("http://localhost:3000/\(ele)")
+            }
+            
+            UserModel.sharedInstance.gallery = gallery
+            self.collectionView!.reloadData()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,6 +94,7 @@ class GalleryCollectionViewController: UICollectionViewController {
         // Configure the cell
         cell.image.image = UIImage(data: NSData(contentsOfURL: NSURL(string: UserModel.sharedInstance.gallery[indexPath.row])!)!)
         cell.imagePath = UserModel.sharedInstance.gallery[indexPath.row]
+        cell.imageID = indexPath.row
         
         
         return cell
