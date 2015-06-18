@@ -47,8 +47,11 @@ class FriendsViewController: UITableViewController {
         if segue.identifier == "p2pChatIdentifier" {
             var selected: Int = FriendsViewController.selectedFriendArrID
             println("to p2p: \(selected)")
-            (segue.destinationViewController as! P2PChatViewController).messageReceiverArrID = selected
-            (segue.destinationViewController as! P2PChatViewController).messageReceiverID = UserModel.sharedInstance.friendsIDs[selected]
+            FriendLGChatViewController.messageReceiverArrID = selected
+            FriendLGChatViewController.messageReceiverID = UserModel.sharedInstance.friendsIDs[selected]
+            //(segue.destinationViewController as! P2PChatViewController).messageReceiverArrID = selected
+            //(segue.destinationViewController as! P2PChatViewController).messageReceiverID = UserModel.sharedInstance.friendsIDs[selected]
+            
         } else if segue.identifier == "friendSearchIdentifier" {
             
         }

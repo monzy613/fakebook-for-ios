@@ -47,6 +47,13 @@ class StateTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("stateCell", forIndexPath: indexPath) as! StateTableViewCell
         cell.stateView.text = UserModel.sharedInstance.states[UserModel.sharedInstance.states.count - indexPath.row - 1]
+        var red:CGFloat = CGFloat(CGFloat(random())/CGFloat(RAND_MAX))
+        var green:CGFloat = CGFloat(CGFloat(random())/CGFloat(RAND_MAX))
+        var blue:CGFloat = CGFloat(CGFloat(random())/CGFloat(RAND_MAX))
+        
+        
+        cell.stateView.backgroundColor =
+        UIColor(red: red, green: green, blue: blue, alpha: 1)
 
         // Configure the cell...
 
@@ -68,7 +75,7 @@ class StateTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
@@ -78,7 +85,7 @@ class StateTableViewController: UITableViewController {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
+    
 
     /*
     // Override to support rearranging the table view.

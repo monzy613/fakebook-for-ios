@@ -11,6 +11,9 @@ import Alamofire
 
 class NewStateViewController: UIViewController {
 
+    @IBAction func dismiss(sender: UIBarButtonItem) {
+        self.dismissViewControllerAnimated(true, completion: {})
+    }
     @IBAction func saveButtonPressed(sender: UIBarButtonItem) {
         saveNewState()
     }
